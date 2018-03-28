@@ -1,10 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+							 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>nl.inl.blacklab</groupId>
 	<artifactId>blacklab-all</artifactId>
 	<packaging>pom</packaging>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.7.0-SNAPSHOT</version>
 	<name>BlackLab Corpus Search</name>
 	<description>The parent project for BlackLab Core and BlackLab Server.</description>
 	<url>https://github.com/INL/BlackLab</url>
@@ -25,8 +28,7 @@
 		<url>https://github.com/INL/BlackLab</url>
 		<connection>scm:git:git@github.com:fryske-akademy/BlackLab.git</connection>
 		<developerConnection>scm:git:git@github.com:fryske-akademy/BlackLab.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+	</scm>
 
 	<developers>
 		<developer>
