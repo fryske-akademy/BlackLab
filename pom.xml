@@ -66,23 +66,6 @@
         </repository>
 	</distributionManagement>
 
-	<build>
-		<plugins>
-			<!-- Deploy a release to the OSSRH Nexus Repository Manager (for deploying to Maven Central) -->
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.3</version>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>false</autoReleaseAfterClose>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
     <profiles>
         <profile>
             <id>release</id>
