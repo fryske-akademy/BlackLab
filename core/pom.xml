@@ -22,8 +22,8 @@
 
 	<scm>
 		<url>https://github.com/INL/BlackLab</url>
-		<connection>scm:git:git://github.com/INL/BlackLab.git</connection>
-		<developerConnection>scm:git:git@github.com:INL/BlackLab.git</developerConnection>
+		<connection>scm:git:git@github.com:fryske-akademy/BlackLab.git</connection>
+		<developerConnection>scm:git:git@github.com:fryske-akademy/BlackLab.git</developerConnection>
 	</scm>
 
 	<organization>
