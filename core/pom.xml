@@ -4,7 +4,7 @@
 	<parent>
         <groupId>nl.inl.blacklab</groupId>
         <artifactId>blacklab-all</artifactId>
-        <version>fa-1.7.0</version>
+        <version>fa-1.7.1-SNAPSHOT</version>
     </parent>
 	<artifactId>blacklab</artifactId>
 	<packaging>jar</packaging>
@@ -24,7 +24,7 @@
 		<url>https://github.com/INL/BlackLab</url>
 		<connection>scm:git:git@github.com:fryske-akademy/BlackLab.git</connection>
 		<developerConnection>scm:git:git@github.com:fryske-akademy/BlackLab.git</developerConnection>
-	  <tag>fa-1.7.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<organization>
