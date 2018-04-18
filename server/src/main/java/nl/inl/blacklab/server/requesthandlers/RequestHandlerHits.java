@@ -114,10 +114,9 @@ public class RequestHandlerHits extends RequestHandler {
 						return Response.busy(ds, servlet);
 
 					// Finished counting, but haven't retrieved enough hits, out of range window requested!
-					// Correct.
-                    if (total.countSoFarHitsRetrieved() <= first)
+					if (total.countSoFarHitsRetrieved() <= first)
 						first = 0;
-                }
+				}
 
 				window = total.window(first, size);
 			}

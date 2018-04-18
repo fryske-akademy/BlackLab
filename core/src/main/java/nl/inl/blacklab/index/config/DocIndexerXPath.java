@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,21 +30,16 @@ import com.ximpleware.XPathEvalException;
 import com.ximpleware.XPathParseException;
 
 import nl.inl.blacklab.index.Indexer;
-import static nl.inl.blacklab.index.config.DocIndexerConfig.replaceDollarRefs;
 import nl.inl.blacklab.index.config.InlineObject.InlineObjectType;
 import nl.inl.util.ExUtil;
 import nl.inl.util.StringUtil;
 import nl.inl.util.XmlUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * An indexer configured using full XPath 1.0 expressions.
  */
 public class DocIndexerXPath extends DocIndexerConfig {
     
-    private static final Logger logger = LogManager.getLogger(DocIndexerXPath.class);
-
     private static enum FragmentPosition {
         BEFORE_OPEN_TAG,
         AFTER_OPEN_TAG,
@@ -129,9 +125,10 @@ public class DocIndexerXPath extends DocIndexerConfig {
     }
 
     /** Map from XPath expression to compiled XPath. */
-    private Map<String, AutoPilot> compiledXPaths = new HashMap<>(); // TODO private ??
+    private Map<String, AutoPilot> compiledXPaths = new HashMap<>();
 
-    /** Map from XPath expression to compiled XPath. */
+    /** AutoPilots that are currently being used. We need to keep track of this
+        to be able to re-add them to compiledXpath with the correct XPath expression later. */
     private Map<AutoPilot, String> autoPilotsInUse = new HashMap<>();
 
     /**
@@ -750,11 +747,11 @@ public class DocIndexerXPath extends DocIndexerConfig {
 
     @Override
     protected void storeDocument() {
-        storeWholeDocument(new String(inputDocument, documentByteOffset, documentLengthBytes));
+        storeWholeDocument(new String(inputDocument, documentByteOffset, documentLengthBytes, StandardCharsets.UTF_8));
     }
 
     @Override
-	public int getCharacterPosition() {
+	protected int getCharacterPosition() {
 	    // VTD-XML provides no way of getting the current character position,
 	    // only the byte position.
 	    // In order to keep track of character position (which we need for Lucene's term vector),
@@ -766,7 +763,7 @@ public class DocIndexerXPath extends DocIndexerConfig {
             int currentByteOffset = getCurrentByteOffset();
             if (currentByteOffset > lastCharPositionByteOffset) {
                 int length = currentByteOffset - lastCharPositionByteOffset;
-                String str = new String(inputDocument, lastCharPositionByteOffset, length);
+                String str = new String(inputDocument, lastCharPositionByteOffset, length, StandardCharsets.UTF_8);
                 lastCharPosition += str.length();
                 lastCharPositionByteOffset = currentByteOffset;
             }
