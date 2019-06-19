@@ -92,7 +92,6 @@
                         <configuration>
                             <sourceDirectory>src/main/javacc</sourceDirectory>
                             <outputDirectory>src/main/java</outputDirectory>
-                            <timestampDirectory>target/generated-sources/javacc-timestamp</timestampDirectory>
                         </configuration>
                     </execution>
                 </executions>
