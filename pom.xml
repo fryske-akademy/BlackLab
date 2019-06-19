@@ -1,25 +1,28 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>nl.inl.blacklab</groupId>
-	<artifactId>blacklab-all</artifactId>
-	<packaging>pom</packaging>
-	<version>fa-1.7.4-SNAPSHOT</version>
-	<name>BlackLab Corpus Search</name>
-	<description>The parent project for BlackLab Core and BlackLab Server.</description>
-	<url>https://github.com/INL/BlackLab</url>
+    <groupId>nl.inl.blacklab</groupId>
+    <artifactId>blacklab-all</artifactId>
+    <packaging>pom</packaging>
+    <version>fa-2.0.0-SNAPSHOT</version>
+    <name>BlackLab Corpus Search</name>
+    <description>The parent project for BlackLab Core and BlackLab Server.</description>
+    <url>https://github.com/INL/BlackLab</url>
 
-	<modules>
-		<module>core</module>
-		<module>server</module>
-	</modules>
+    <modules>
+        <module>core</module>
+        <module>server</module>
+    </modules>
 
-	<licenses>
-		<license>
-			<name>The Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
 	<scm>
 		<url>https://github.com/INL/BlackLab</url>
@@ -28,33 +31,33 @@
 	  <tag>HEAD</tag>
   </scm>
 
-	<developers>
-		<developer>
-			<id>jan-niestadt</id>
-			<name>Jan Niestadt</name>
-			<email>jan.niestadt@inl.nl</email>
-			<url>https://github.com/jan-niestadt</url>
-			<organization>INL</organization>
-			<organizationUrl>http://www.inl.nl</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>Europe/Amsterdam</timezone>
-		</developer>
-		
-		<developer>
-			<id>JesseDeDoes</id>
-			<name>Jesse de Does</name>
-			<email>jesse.dedoes@inl.nl</email>
-			<url>https://github.com/JesseDeDoes</url>
-			<organization>INL</organization>
-			<organizationUrl>http://www.inl.nl</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>Europe/Amsterdam</timezone>
-		</developer>
-	</developers>
+    <developers>
+        <developer>
+            <id>jan-niestadt</id>
+            <name>Jan Niestadt</name>
+            <email>jan.niestadt@inl.nl</email>
+            <url>https://github.com/jan-niestadt</url>
+            <organization>INL</organization>
+            <organizationUrl>http://www.inl.nl</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>Europe/Amsterdam</timezone>
+        </developer>
+
+        <developer>
+            <id>JesseDeDoes</id>
+            <name>Jesse de Does</name>
+            <email>jesse.dedoes@inl.nl</email>
+            <url>https://github.com/JesseDeDoes</url>
+            <organization>INL</organization>
+            <organizationUrl>http://www.inl.nl</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>Europe/Amsterdam</timezone>
+        </developer>
+    </developers>
 
 	<!-- Where releases are deployed (OSSRH, for publishing to Maven Central) -->
 	<distributionManagement>
@@ -78,9 +81,8 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.0.0</version>
+                        <version>3.0.1</version>
                         <configuration>
-                            <additionalparam>-Xdoclint:none</additionalparam>
                             <failOnError>false</failOnError>
                         </configuration>
                     </plugin>
@@ -92,13 +94,6 @@
                             <releaseProfiles>release</releaseProfiles>
                             <goals>deploy</goals>
                         </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.apache.maven.scm</groupId>
-                                <artifactId>maven-scm-provider-gitexe</artifactId>
-                                <version>1.9.5</version>
-                            </dependency>
-                        </dependencies>                    
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

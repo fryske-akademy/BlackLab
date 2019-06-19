@@ -105,7 +105,7 @@ Explanation of the various resources:
 	</tr>
 	<tr>
 		<td>fields/FIELDNAME </td>
-		<td>Shows the settings and (some) field values for a metadata field. For complex ("contents") fields, it will show the different properties (e.g. features/annotations) the field has for each token.</td>
+		<td>Shows the settings and (some) field values for a metadata field. For annotated fields (e.g. "contents"), it will show the different annotations (e.g. word, lemma, pos) the field has for each token.</td>
 	</tr>
 	<tr>
 		<td>autocomplete/FIELDNAME </td>
@@ -232,7 +232,7 @@ Below is an overview of parameters that can be passed to the various resources. 
 	</tr>
 	<tr>
 		<td>outputformat </td>
-		<td>“json” or “xml”. (Default: check the HTTP Accept header, or use the server default (usually xml) if none was specified. NOTE: most browsers send a default Accept header including XML.</td>
+		<td>“json”, “xml” or "csv". (Default: check the HTTP Accept header, or use the server default (usually xml) if none was specified. NOTE: most browsers send a default Accept header including XML.<br/><br/>For "csv", two additional parameters are supported: "csvsummary=yes" will add a summary of the query to the CSV output; "csvsepline=yes" will add "sep=," as the first line, specifically for using the resulting CSV with Excel. Both default to "no".</td>
 	</tr>
 	<tr>
 		<td>jsonp </td>
@@ -286,7 +286,7 @@ The sort, group, hitfiltercrit and facets parameters receive one or more criteri
 	</tr>
 	<tr>
 		<td>hit[:prop[:c]] </td>
-		<td>Sort/group/facet on matched text. If prop is omitted, the default property (usually word) is used. c can specify case-sensitivity: either s (sensitive) or i (insensitive). prop and c can also be added to left, right, wordleft and wordright. Examples: hit, hit:lemma, hit:lemma:s.</td>
+		<td>Sort/group/facet on matched text. If prop is omitted, the default annotation (usually word) is used. c can specify case-sensitivity: either s (sensitive) or i (insensitive). prop and c can also be added to left, right, wordleft and wordright. Examples: hit, hit:lemma, hit:lemma:s.</td>
 	</tr>
 	<tr>
 		<td>left / right </td>
@@ -327,7 +327,7 @@ The sort, group, hitfiltercrit and facets parameters receive one or more criteri
 
 Criteria like "context:word:s:H1-2" (first two matched words) allow fine control over what to group or sort on.
 
-Like with criteria such as left, right or hit, you can vary the property to group or sort on (e.g. word/lemma/pos, or other options depending on your data set). You may specify whether to sort/group case- and accent-sensitively (s) or insensitively (i).
+Like with criteria such as left, right or hit, you can vary the annotation to group or sort on (e.g. word/lemma/pos, or other options depending on your data set). You may specify whether to sort/group case- and accent-sensitively (s) or insensitively (i).
 
 The final parameter to a "context:" criterium is the specification. This consists of one or more parts separated by a semicolon. Each part consists of an "anchor" and number(s) to indicate a stretch of words. The anchor can be H (hit text), E (hit text, but counted from the end of the hit), L (words to the left of the hit) or R (words to the right of the hit). The number or numbers after the anchor specify what words you want from this part. A single number indicates a single word; 1 is the first word, 2 the second word, etc. So "E2" means "the second-to-last word of the hit". Two numbers separated by a dash indicate a stretch of words. So "H1-2" means "the first two words of the hit", and "E2-1" means "the second-to-last word followed by the last word". A single number followed by a dash means "as much as possible from this part, starting from this word". So "H2-" means "the entire hit text except the first word".
 
@@ -391,17 +391,17 @@ Information about the webservice; list of available indices
 
         http://blacklab.ivdnt.org/blacklab-server/ (trailing slash optional)
 
-Information about the “opensonar” corpus (structure, fields, human-readable names)
+Information about the “opensonar” corpus (structure, fields, (sub)annotations, human-readable names)
 
         http://blacklab.ivdnt.org/blacklab-server/opensonar/ (trailing slash optional)
 
-Information about the “opensonar” corpus, include all values for "pos" property (listvalues is a comma-separated list of property names):
+Information about the “opensonar” corpus, include all values for "pos" annotation (listvalues is a comma-separated list of annotation names):
 
         http://blacklab.ivdnt.org/blacklab-server/opensonar/?listvalues=pos
 
-Information about the “opensonar” corpus, include subproperties and their values for "pos" property:
+Information about the “opensonar” corpus, include all values for "pos" annotation and any subannotations (listvalues may contain regexes):
 
-        http://blacklab.ivdnt.org/blacklab-server/opensonar/?subprops=pos
+        http://blacklab.ivdnt.org/blacklab-server/opensonar/?listvalues=pos.*
 
 Autogenerated XSLT stylesheet for transforming whole documents (only available for configfile-based XML formats):
 
@@ -572,6 +572,10 @@ The blacklab-server.json file should be placed in /etc/blacklab/, or you should 
             // result (default is to include empty properties)
             "omitEmptyProperties": false,
             
+            // Use the old names for annotatedField and annotation
+            // (used to be complexField and property)? [false]
+            "useOldElementNames": false,
+            
             // By default, BLS will send the Access-Control-Allow-Origin
             // header to allow all origins to connect, but you can override
             // this behaviour here.
@@ -632,8 +636,8 @@ The blacklab-server.json file should be placed in /etc/blacklab/, or you should 
 	
 	            // Maximum size the cache may grow to (in megabytes), or 
 	            // -1 for no limit.
-	            // [NOT PROPERLY IMPLEMENTED YET! LEAVE AT -1 FOR NOW]
-	            "maxSizeMegs": -1,
+	            // [IMPLEMENTED IN 2.0; FOR EARLIER VERSIONS, LEAVE THIS AT -1 ]
+	            "maxSizeMegs": 1000,
 	
 	            // How much free memory the cache should shoot for (in 
 	            // megabytes) while cleaning up. Because we don&#39;t have 
@@ -641,16 +645,7 @@ The blacklab-server.json file should be placed in /etc/blacklab/, or you should 
 	            // reliably clean up until this exact number is available.
 	            // Instead we just get rid of a few cached jobs whenever a
 	            // new job is added and we&#39;re under this target number.
-	            // See numberOfJobsToPurgeWhenBelowTargetMem.
-	            "targetFreeMemMegs": 100,
-	
-	            // When there&#39;s less free memory available than 
-	            // targetFreeMemMegs, each time a job is created and added
-	            // to the cache, we will get rid of this number of older 
-	            // jobs in order to (hopefully) free up memory (if the 
-	            // Java GC agrees with us). 2 seems like an okay value, 
-	            // but you can change it if you want to experiment.
-	            "numberOfJobsToPurgeWhenBelowTargetMem": 2
+	            "targetFreeMemMegs": 100
 	        },
 	
 	        // The minimum amount of free memory required to start a new 
@@ -666,6 +661,7 @@ The blacklab-server.json file should be placed in /etc/blacklab/, or you should 
 	        // shouldn&#39;t be set too low. This setting is meant to prevent
 	        // over-eager scripts and other abuse from bringing down the
 	        // server. Regular users should never hit this limit.
+	        // [NO LONGER USED IN 2.0, BUT MIGHT MAKE A COMEBACK AT SOME POINT]
 	        "maxRunningJobsPerUser": 20,
 	
 	        // How long the client may keep results we give them in their
@@ -695,6 +691,13 @@ The blacklab-server.json file should be placed in /etc/blacklab/, or you should 
 		        "127.0.0.1",      // IPv4 localhost
 		        "0:0:0:0:0:0:0:1" // IPv6 localhost
 		    ],
+		    
+		    // Specify a file to create an SQLite (https://www.sqlite.org/index.html) database
+		    // and log details about requests and cache statistics there.
+		    // Note that SQLite will extract its DLL to the tmpDir (usually /tmp/), which must
+		    // therefore be writable by the application server!
+		    // [defaults to no SQLite log]
+		    "sqliteLogDatabase": "/tmp/blacklab_log.db",
 		    
 	        // Trace settings. Controls per-subject detail logging.
 	        "trace": {
