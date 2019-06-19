@@ -331,11 +331,11 @@
                             <report>dependencies</report>
                             <report>dependency-info</report>
                             <!-- <report>index</report> -->
-                            <report>issue-tracking</report>
-                            <report>license</report>
+                            <report>issue-management</report>
+                            <report>licenses</report>
                             <report>plugin-management</report>
                             <report>plugins</report>
-                            <report>project-team</report>
+                            <report>team</report>
                             <!-- <report>mailing-list</report> <report>cim</report> -->
                             <report>scm</report>
                             <report>summary</report>
